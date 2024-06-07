@@ -1,0 +1,222 @@
+
+
+  
+  
+  <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Orders</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS for styling -->
+    <style>
+        /* Custom styles for the user orders page */
+        body {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .order-card {
+            margin-bottom: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .order-item {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .total-amount {
+            font-weight: bold;
+        }
+        .product-image {
+            max-height: 140px; /* Set the maximum height */
+            max-width: 140px; /* Set the maximum width */
+        }
+        .navbar {
+    background-color: #ADD8E6;
+}
+
+.jumbotron {
+    background-color: #f8f9fa;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.navbar ul li a{
+ font-weight: 400;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.card-body {
+    background-color: #fff;
+}
+
+.card-body:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-nav {
+    display: flex;
+    list-style: none;
+    padding: 0;
+}
+
+.nav-item {
+    position: relative;
+    margin-right: 10px;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+}
+
+.nav-item:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu {
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+}
+
+.dropdown-item:hover {
+    background-color: aliceblue;
+    color: black;
+}
+/* location css */
+#addressContainer {
+    display: none;
+    position: absolute;
+    top: calc(100% + 3px);
+    right: 80px;
+    width: 200px;
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    z-index: 999;
+}
+
+.profileDrop :hover{
+background-image: linear-gradient( 109.6deg,  rgba(62,161,219,1) 11.2%, rgba(93,52,236,1) 100.2% );
+color:white;
+}
+.first:hover svg {
+  transform: rotate(360deg);
+  transition: transform 0.59s ease;
+}
+.second:hover svg {
+  transform: rotate(360deg);
+  transition: transform 0.59s ease;
+}
+.third:hover svg {
+  transform: rotate(360deg);
+  transition: transform 0.59s ease;
+}
+.fourth:hover svg {
+  transform: rotate(360deg);
+  transition: transform 0.59s ease;
+}
+.fifth:hover svg {
+  transform: rotate(360deg);
+  transition: transform 0.59s ease;
+}
+        
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="mt-4 mb-4">My Orders</h1>
+
+        <div th:each="order : ${userOrders}" class="order-card">
+            <h5 th:text="'Order Number: ' + ${order.orderNumber}" class="mb-3"></h5>
+            <p th:text="'Order Date: ' + ${order.orderDate}" class="mb-2"></p>
+
+            <div class="table-responsive">
+                <table class="table order-item-table">
+                    <thead>
+                        <tr>
+                            <th>Product Image</th>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Price (₹)</th>
+                            <th>Total Price (₹)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="orderItem : ${order.orderItems}" class="order-item">
+                            <td>
+
+<a th:href="@{cart/viewproduct(id=${orderItem.product.id})}"><img th:src="@{'/images/' + ${orderItem.product.imageFileName}}" class="img-fluid product-image" alt="Product Image"></a>
+
+</td>
+                            <td th:text="${orderItem.product.name}"></td>
+                            <td th:text="${orderItem.quantity}"></td>
+                            <td th:text="'₹' + ${orderItem.product.price}"></td>
+                            <td th:text="'₹' + ${orderItem.totalPrice}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <p class="mb-1">Shipping Charges: ₹<span th:text="${order.shippingCharges}"></span></p>
+                    <p class="mb-0">Subtotal: ₹<span th:text="${order.subtotal}"></span></p>
+                </div>
+                <div class="col-md-6 text-right">
+                    <h4 class="total-amount mb-0">Total Amount: ₹<span th:text="${order.totalAmount}"></span></h4>
+                </div>
+            </div>
+
+            <!-- Additional elements inspired by Flipkart -->
+            <div class="row mt-3">
+                <div class="col-sm-6">
+                    <a href="#" class="btn btn-primary">Track Order</a>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <a href="#" class="btn btn-outline-primary">Write a Review</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (optional if needed) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
+  
